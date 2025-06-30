@@ -1,93 +1,69 @@
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penyimpan Gambar Lokal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #0056b3;
-        }
-        .upload-area {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            border: 2px dashed #ccc;
-            border-radius: 8px;
-            background-color: #e9e9e9;
-        }
-        #imageInput {
-            display: none; /* Hide default input */
-        }
-        .custom-file-upload {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .custom-file-upload:hover {
-            background-color: #0056b3;
-        }
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .image-gallery img {
-            width: 100%;
-            height: 150px; /* Fixed height for consistency */
-            object-fit: cover; /* Crop images to fit */
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .info-box {
-            background-color: #fff3cd;
-            border-left: 5px solid #ffeeba;
-            padding: 15px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            color: #664d03;
-        }
-    </style>
+    <title>AI Image Analyzer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Penyimpan Gambar Lokal</h1>
-        <div class="info-box">
-            Ini adalah aplikasi web sisi klien. Gambar yang Anda unggah akan disimpan secara lokal di browser Anda menggunakan IndexedDB. Ini <strong>bukan</strong> penyimpanan publik yang dapat diakses oleh orang lain di internet.
-        </div>
-        <div class="upload-area">
-            <label for="imageInput" class="custom-file-upload">
-                Pilih Gambar untuk Diunggah
-            </label>
-            <input type="file" id="imageInput" accept="image/*" multiple>
-            <p>Klik tombol di atas untuk memilih satu atau beberapa gambar.</p>
-        </div>
-        <h2>Galeri Gambar Anda</h2>
-        <div id="imageGallery" class="image-gallery">
-            <!-- Images will be loaded here -->
-        </div>
+        <header>
+            <h1>AI Image Analyzer</h1>
+            <p>Upload gambar dan dapatkan link yang bisa dibaca oleh AI seperti GPT/Gemini</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7,10 12,15 17,10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <h3>Drop gambar di sini atau klik untuk upload</h3>
+                        <p>Support: JPG, PNG, GIF, WebP (Max 10MB)</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="image-preview">
+                    <img id="previewImage" alt="Preview">
+                </div>
+                
+                <div class="analysis-results">
+                    <div class="result-item">
+                        <label>Image URL (untuk AI):</label>
+                        <div class="url-container">
+                            <input type="text" id="imageUrl" readonly>
+                            <button class="copy-btn" onclick="copyToClipboard('imageUrl')">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <label>AI Analysis:</label>
+                        <div class="analysis-content" id="analysisContent">
+                            <div class="loading">Menganalisis gambar...</div>
+                        </div>
+                    </div>
+
+                    <div class="result-item">
+                        <label>Prompt untuk AI Chat:</label>
+                        <div class="prompt-container">
+                            <textarea id="aiPrompt" readonly></textarea>
+                            <button class="copy-btn" onclick="copyToClipboard('aiPrompt')">Copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="new-upload-btn" onclick="resetUpload()">Upload Gambar Baru</button>
+            </div>
+        </main>
     </div>
 
-    <script type="module" src="main.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
